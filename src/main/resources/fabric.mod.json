@@ -13,8 +13,7 @@
     "sources": "https://github.com/KpnmServer/ksvrgroup_mod/"
   },
 
-  "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "license": "GNU General Public License v3.0",
 
   "environment": "server",
   "entrypoints": {
