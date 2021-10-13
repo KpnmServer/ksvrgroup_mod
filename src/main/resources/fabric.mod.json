@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "ksvrgroup",
+  "version": "${version}",
+
+  "name": "KSvrGroup",
+  "description": "Minecraft server group mod",
+  "authors": [
+    "zyxgad"
+  ],
+  "contact": {
+    "homepage": "https://github.com/KpnmServer/ksvrgroup_mod/",
+    "sources": "https://github.com/KpnmServer/ksvrgroup_mod/"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/modid/icon.png",
+
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "com.github.kpnmserver.ksvrgroup_mod.KSvrGroupMod"
+    ]
+  },
+  "mixins": [
+    "ksvrgroup.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.16.x",
+    "java": ">=8"
+  }
+}

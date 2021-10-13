@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.7",
+  "package": "com.github.kpnmserver.ksvrgroup_mod.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+  ],
+  "server": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
