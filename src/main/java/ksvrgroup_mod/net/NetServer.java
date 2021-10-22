@@ -23,8 +23,12 @@ public class NetServer{
 	private Map<UUID, NetServer> lines;
 	private int ping = Integer.MAX_VALUE;
 
-	NetServer(final UUID uuid, final String id, final String name, final String desc){
-		this(uuid, null, id, name, desc);
+	NetServer(final UUID uuid, final String id){
+		this(uuid, null, id, id, "");
+	}
+
+	NetServer(final UUID uuid, final Connect conn, final String id){
+		this(uuid, conn, id, id, "");
 	}
 
 	NetServer(final UUID uuid, final Connect conn, final String id, final String name, final String desc){
@@ -60,7 +64,7 @@ public class NetServer{
 	}
 
 	public void setName(final String name){
-		this.name = name
+		this.name = name;
 	}
 
 	public String getDesc(){
@@ -68,7 +72,7 @@ public class NetServer{
 	}
 
 	public void setDesc(final String desc){
-		this.desc = desc
+		this.desc = desc;
 	}
 
 	public Set<NetServer> getLines(){
