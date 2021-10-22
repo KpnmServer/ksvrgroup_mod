@@ -29,6 +29,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.github.kpnmserver.ksvrgroup_mod.KSvrGroupMod;
+import com.github.kpnmserver.ksvrgroup_mod.storage.Config;
 import com.github.kpnmserver.ksvrgroup_mod.storage.ServerItem;
 
 public final class ConnectNode extends Thread{
@@ -413,15 +414,27 @@ public final class ConnectNode extends Thread{
 	}
 
 	public Message createMessage(final byte[] data){
-		return new Message(this.netsvr.getUuid(), data);
+		return new Message(this.netsvr.getUuid(), ByteBuffer.wrap(data));
 	}
 
 	public Message createMessage(final byte[] data, final Collection<UUID> recevers){
+		return new Message(this.netsvr.getUuid(), ByteBuffer.wrap(data), recevers);
+	}
+
+	public Message createMessage(final ByteBuffer data){
+		return new Message(this.netsvr.getUuid(), data);
+	}
+
+	public Message createMessage(final ByteBuffer data, final Collection<UUID> recevers){
 		return new Message(this.netsvr.getUuid(), data, recevers);
 	}
 
 	public boolean tryConnect(final String host, final int port){
-		return this.tryConnect(new InetSocketAddress(host, port));
+		return this.tryConnect(host, port, Config.INSTANCE.getAuthmods());
+	}
+
+	public boolean tryConnect(final String host, final int port, final byte authmods){
+		return this.tryConnect(new ServerItem(host, port, authmods));
 	}
 
 	public boolean tryConnect(final ServerItem svr){

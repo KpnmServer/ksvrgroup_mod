@@ -33,7 +33,7 @@ public final class Config{
 	private String description = "A Minecraft Server";
 	private String host = "127.0.0.1";
 	private int port = 25566;
-	private String keypath = "ksvrgroup/keys";
+	private final File keypath = new File(KSvrGroupMod.INSTANCE.getDataFolder(), "keys");
 	private byte authmods = Connect.AUTH_NONE;
 	private List<ServerItem> serverlist = new ArrayList<>();
 
@@ -44,9 +44,8 @@ public final class Config{
 		this.description = "A Minecraft Server";
 		this.host = "127.0.0.1";
 		this.port = 25566;
-		this.keypath = "ksvrgroup/keys";
 		this.authmods = Connect.AUTH_NONE;
-		this.serverlist = new ArrayList<>();
+		this.serverlist.clear();
 	}
 
 	public boolean getEnable(){
@@ -71,6 +70,14 @@ public final class Config{
 
 	public void setName(final String name){
 		this.name = name;
+	}
+
+	public String getDesc(){
+		return this.description;
+	}
+
+	public void setDesc(final String description){
+		this.description = description;
 	}
 
 	public String getHost(){
@@ -106,7 +113,7 @@ public final class Config{
 	}
 
 	public boolean hasAuthmods(final byte authmods){
-		return this.authmods & authmods != 0;
+		return (this.authmods & authmods) != 0;
 	}
 
 	public List<ServerItem> getServerList(){
@@ -145,11 +152,8 @@ public final class Config{
 					case "port":{
 						this.port = jreader.nextInt();
 					}break;
-					case "keypath":{
-						this.keypath = jreader.nextString();
-					}break;
 					case "authmods":{
-						this.authmods = jreader.nextByte();
+						this.authmods = (byte)(jreader.nextInt());
 					}break;
 					case "serverlist":{
 						jreader.beginArray();
@@ -192,7 +196,6 @@ public final class Config{
 			jwriter.name("description").value(this.description);
 			jwriter.name("host").value(this.host);
 			jwriter.name("port").value(this.port);
-			jwriter.name("keypath").value(this.keypath);
 			jwriter.name("authmods").value(this.authmods);
 			jwriter.name("serverlist").beginArray();
 			for(ServerItem svr: this.serverlist){

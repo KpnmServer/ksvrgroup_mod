@@ -14,15 +14,13 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import net.minecraft.text.LiteralText;
 
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-
+import com.github.kpnmserver.kpi.KpiMod;
 import com.github.kpnmserver.ksvrgroup_mod.net.ConnectNode;
 import com.github.kpnmserver.ksvrgroup_mod.storage.Config;
+import com.github.kpnmserver.ksvrgroup_mod.storage.ServerItem;
 
-public class KSvrGroupMod implements ModInitializer {
-	public static KSvrGroupMod INSTANCE = null;
+public class KSvrGroupMod{
+	public static KSvrGroupMod INSTANCE = new KSvrGroupMod();
 	public static final Logger LOGGER = LogManager.getLogger("KSvrGroup");
 
 	private MinecraftServer server = null;
@@ -30,12 +28,8 @@ public class KSvrGroupMod implements ModInitializer {
 
 	private ConnectNode connnode = null;
 
-	public KSvrGroupMod(){
-		this.folder = new File("ksvrgroup");
-		if(!this.folder.exists()){
-			this.folder.mkdirs();
-		}
-		INSTANCE = this;
+	private KSvrGroupMod(){
+		this.folder = KpiMod.INSTANCE.getDataFolder("servergroup");
 	}
 
 	public MinecraftServer getServer(){
@@ -44,16 +38,6 @@ public class KSvrGroupMod implements ModInitializer {
 
 	public File getDataFolder(){
 		return this.folder;
-	}
-
-	@Override
-	public void onInitialize(){
-		LOGGER.info("KSvrGroup is onInitialize");
-		ServerLifecycleEvents.SERVER_STARTING.register(this::onStarting);
-		ServerLifecycleEvents.SERVER_STARTED.register(this::onStarted);
-		CommandRegistrationCallback.EVENT.register(this::onRegisterCommands);
-		ServerLifecycleEvents.SERVER_STOPPING.register(this::onStopping);
-		ServerLifecycleEvents.SERVER_STOPPED.register(this::onStopped);
 	}
 
 	public void onStarting(MinecraftServer server){
@@ -80,8 +64,8 @@ public class KSvrGroupMod implements ModInitializer {
 				}else{
 					this.connnode = new ConnectNode(Config.INSTANCE.getName(), Config.INSTANCE.getHost(), Config.INSTANCE.getPort());
 				}
-				for(InetSocketAddress addr: Config.INSTANCE.getOthers()){
-					this.connnode.tryConnect(addr);
+				for(ServerItem item: Config.INSTANCE.getServerList()){
+					this.connnode.tryConnect(item);
 				}
 			}catch(IOException e){
 				KSvrGroupMod.LOGGER.error("Init selector error:", e);

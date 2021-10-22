@@ -14,7 +14,7 @@ public final class ServerItem{
 	private byte authmods;
 
 	public ServerItem(){
-		this(null, -1, 0);
+		this(null, -1, (byte)(0));
 	}
 
 	public ServerItem(final String host, final int port, final byte authmods){
@@ -56,7 +56,7 @@ public final class ServerItem{
 	}
 
 	public boolean hasAuthmods(final byte authmods){
-		return this.authmods & authmods != 0;
+		return (this.authmods & authmods) != 0;
 	}
 
 	public String toString(){
@@ -81,11 +81,12 @@ public final class ServerItem{
 			}else if("port".equals(key)){
 				item.port = reader.nextInt();
 			}else if("authmods".equals(key)){
-				item.authmods = reader.nextByte();
+				item.authmods = (byte)(reader.nextInt());
 			}else{
 				reader.skipValue();
 			}
 		}
 		reader.endObject();
+		return item;
 	}
 }

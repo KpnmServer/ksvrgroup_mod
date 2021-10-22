@@ -55,10 +55,6 @@ public final class EncryptUtil{
 		genRSAKeyPair(2048, keys);
 	}
 
-	public static SecretKey genAESKey() throws GeneralSecurityException{
-		return genAESKey(256);
-	}
-
 	public static byte[][] genRSAKeyPairBytes(final int size) throws GeneralSecurityException{
 		final byte[][] keys = new byte[2][];
 		genRSAKeyPair(size, keys);
@@ -67,6 +63,10 @@ public final class EncryptUtil{
 
 	public static byte[][] genRSAKeyPairBytes() throws GeneralSecurityException{
 		return genRSAKeyPairBytes(2048);
+	}
+
+	public static SecretKey genAESKey() throws GeneralSecurityException{
+		return genAESKey(256);
 	}
 
 	public static SecretKey genAESKey(final int size) throws GeneralSecurityException{
@@ -112,7 +112,7 @@ public final class EncryptUtil{
 		return encryptRSA(data, encodeRSAPrivateKey(key));
 	}
 
-	private static byte[] encryptRSAByPubKey(final byte[] data, final byte[] key) throws GeneralSecurityException{
+	public static byte[] encryptRSAByPubKey(final byte[] data, final byte[] key) throws GeneralSecurityException{
 		return encryptRSA(data, encodeRSAPublicKey(key));
 	}
 
@@ -130,10 +130,24 @@ public final class EncryptUtil{
 		return cipher.doFinal(data);
 	}
 
+	public static byte[] encryptAES(final byte[] data, final int offset, final int length, final SecretKey key)
+		throws GeneralSecurityException{
+		final Cipher cipher = Cipher.getInstance(AES_ALGORITHM);
+		cipher.init(Cipher.ENCRYPT_MODE, key);
+		return cipher.doFinal(data, offset, length);
+	}
+
 	public static byte[] decryptAES(final byte[] data, final SecretKey key) throws GeneralSecurityException{
 		final Cipher cipher = Cipher.getInstance(AES_ALGORITHM);
 		cipher.init(Cipher.DECRYPT_MODE, key);
 		return cipher.doFinal(data);
+	}
+
+	public static byte[] decryptAES(final byte[] data, final int offset, final int length, final SecretKey key)
+		throws GeneralSecurityException{
+		final Cipher cipher = Cipher.getInstance(AES_ALGORITHM);
+		cipher.init(Cipher.DECRYPT_MODE, key);
+		return cipher.doFinal(data, offset, length);
 	}
 
 	public static byte[] encryptAES(final byte[] data, final byte[] key) throws GeneralSecurityException{
